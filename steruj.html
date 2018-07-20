@@ -61,11 +61,7 @@
       <div class="form-item"><label for="color">Color:</label><input type="text" id="color" name="color" value="#111111" /></div><div id="picker"></div>
     <button id="c" class="button pg" onclick="handlecolor('color', '8');">Confirm</button>
     </div>
-     <script type="text/javascript" charset="utf-8">
-      $(document).ready(function() {
-        $('#picker').farbtastic('#color');
-      });
-     </script>
+
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
       <h5 class="my-2 mr-md-auto font-weight-normal" style="width: 30%;"><img src="sterowanie24-black-100height.png" id="sterowanie-logo"></h5>
       <nav class="my-2 my-md-0 mr-md-3">
@@ -90,7 +86,7 @@
           <div class="card-header">
             <h5 class="my-0 font-weight-normal">Panel sterowania</h5>
           </div>
-          <div class="card-body">
+          <div class="card-body" id="control_items_area">
             <div style="">  <p style="width: 75%;float: left;">Jeden kolor kotek</p> <button  style="width: 25%;" type="button" class="btn btn-sm btn-block btn-success">Włącz</button></div><div style="clear: both;"></div>
             <div style="">  <p style="width: 75%;float: left;">Jeden dzwonek kotek</p> <button  style="width: 25%;" type="button" class="btn btn-sm btn-block btn-danger">Wyłącz</button></div><div style="clear: both;"></div>
 
@@ -167,7 +163,7 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"  crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
     <script>
@@ -528,5 +524,99 @@
     }
 
     </script>
+    <script type="text/javascript" charset="utf-8">
+
+    function controlItemActionHandle(controlItemId) {
+        var controlItemElement = $("#ci_" + controlItemId);
+        if (controlItemElement.attr("data-control-item-type") == "1") {
+            // Type is on/off button
+            if (controlItemElement.val() == "0") {
+               controlItemElement.val("1");
+               controlItemElement.html("Wyłącz");
+            } else {
+               controlItemElement.val("0");
+               controlItemElement.html("Włącz");
+            }
+        }
+    }
+
+    function dropdownControlItemActionHandle(controlItemId, dropdownOptionIndex) {
+        var dropdownItem = $("#dropdown_item_ci_" + controlItemId + "_" + dropdownOptionIndex);
+        var dropdownToggle = $("#dropdown_toggle_ci_" + controlItemId);
+        var dropdownItemText = dropdownItem.text();
+
+        dropdownToggle.html(dropdownItemText+' <span class="caret"></span>');
+    }
+
+    function handleRangeSliderAction (rangeSliderObject) {
+        var controlItemId = rangeSliderObject.id;
+        var rangeValue = rangeSliderObject.value;
+
+        console.log("Range slider " + controlItemId  + " updated to " + rangeValue);
+    }
+
+    $(document).ready(function() {
+       $('#picker').farbtastic('#color');
+
+   /// Get controlling data
+
+   var apiServerAddress = "http://localhost";
+   var apiServerPort = 8000;
+
+   var roomID = 1;
+   $.ajax({
+      //  headers: {"x-api-key" : "123ABC987XYZ"},
+        url:apiServerAddress+":"+apiServerPort+"/rooms/"+roomID.toString()+"/controls",
+        type:"GET",
+        dataType: "json",
+        success: function(response){
+           /// Render control items
+           for (let key in response) {
+              console.log("key: %o, value: %o", key, response[key]);
+              /* Types descriptions
+               * 1 - standard on/off button
+               * 2 - color picker button
+               * 3 - range slider
+               * 4 - select list
+              */
+
+              controlItemId = key;
+
+              if (response[key].type == 1) {
+                $("#control_items_area").append('<p style="width:'+response[key].name_area_width_percent+'%;color:'+response[key].textcolor+';float:left;">'+response[key].name+'</p><button data-control-item-type="1" onclick="controlItemActionHandle('+controlItemId+');" id="ci_'+controlItemId+'" style="width:'+response[key].control_item_width_percent+'%;" type="button" class="btn btn-sm btn-block btn-success" value="unspecified">Włącz</button><div style="clear: both;"></div>');
+              } else if (response[key].type == 2) {
+                $("#control_items_area").append('<p style="width:'+response[key].name_area_width_percent+'%;color:'+response[key].textcolor+';float:left;">'+response[key].name+'</p><button id="ci_'+controlItemId+'" style="width:'+response[key].control_item_width_percent+'%;" type="button" class="btn btn-sm btn-block btn-success" value="unspecified">Włącz</button><div style="clear: both;"></div>');
+              } else if (response[key].type == 3) {
+                $("#control_items_area").append('<p style="width:'+response[key].name_area_width_percent+'%;color:'+response[key].textcolor+';float:left;">'+response[key].name+'</p><input id="ci_'+controlItemId+'" style="width:'+response[key].control_item_width_percent+'%;" type="range" class="form-control-range" id="formControlRange" min="'+response[key].range_slider_from+'" max="'+response[key].range_slider_to+'" oninput="handleRangeSliderAction(this)" onchange="handleRangeSliderAction(this)"><div style="clear: both;"></div>');
+              } else if (response[key].type == 4) {
+                var dropdownButton = '<button id="dropdown_toggle_ci_'+controlItemId+'" style="width:100%;" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Niebieski</button>';
+                var comboboxData = '<div class="dropdown-menu">';
+                for (let key2 in response[key].combobox_options) {
+                    comboboxData += '<a class="dropdown-item" onclick="dropdownControlItemActionHandle('+controlItemId+', '+key2+');" id="dropdown_item_ci_'+controlItemId+'_'+key2+'">' + response[key].combobox_options[key2] + '</a>';
+                }
+                comboboxData += '</div>';
+                $("#control_items_area").append('<p style="width:'+response[key].name_area_width_percent+'%;color:'+response[key].textcolor+';float:left;">'+response[key].name+'</p><div style="width:'+response[key].control_item_width_percent+'%;" class="btn-group"> ' + dropdownButton + comboboxData + ' </div><div style="clear: both;"></div>');
+              }
+
+           }
+          // $(".dropdown-menu a").click(function(){
+            // console.log("actionType");
+              // var selText = $(this).text();
+              // $(this).parents('.card-body').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+           //});
+          console.log(response);
+        }
+      });
+
+  });
+
+//  <div class="dropdown-divider"></div>
+
+    </script>
+
+
+
+
+
   </body>
 </html>
