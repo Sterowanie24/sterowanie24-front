@@ -88,7 +88,7 @@
         <div class="modal-dialog" style="width:100%;" role="document">
           <div class="modal-content" style="width:100%;">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Dodaj element kontrolny</h5>
+              <h5 class="modal-title" id="colorPickerModalLabel"></h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -115,7 +115,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-minus-circle" ></i> Anuluj</button>
-              <button type="button" id="color_apply_button" class="btn btn-primary" data-dismiss="modal" onclick="handlecolor('color', this);"><i class="fas fa-save" ></i> Zatwierdź</button>
+              <button type="button" id="color_apply_button" class="btn btn-primary" data-dismiss="modal" onclick="handlecolor('color', this);"><i class="fas fa-plus"></i> Zatwierdź</button>
             </div>
           </div>
         </div>
@@ -207,6 +207,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"  crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js" integrity="sha256-ji09tECORKvr8xB9iCl8DJ8iNMLriDchC1+p+yt1hSs=" crossorigin="anonymous"></script>
     <script>
       Holder.addTheme('thumb', {
         bg: '#55595c',
@@ -569,6 +570,8 @@
 
 
       $("#color_apply_button").attr("data-assigned-ci-id", controlItemId);
+      $("#colorPickerModalLabel").html("Wybierz kolor");
+
     	//var colorApplyButton = document.getElementById("color_apply_button");
 
     	//button.classList.toggle("pgalt");
@@ -584,13 +587,53 @@
     </script>
     <script type="text/javascript" charset="utf-8">
 
+    function updateControlItemState (controlItemId, newControlItemState) {
+      var controlItemElement = $("#ci_" + controlItemId);
+      var controlItemType = controlItemElement.attr("data-control-item-type");
+
+      if (controlItemType == 1) {
+          if (newControlItemState == "0") {
+              controlItemElement.val("0");
+              controlItemElement.html("Włącz");
+          } else {
+             controlItemElement.val("1");
+             controlItemElement.html("Wyłącz");
+          }
+      } else if (controlItemType == 2) {
+          document.getElementById("ci_"+controlItemId).style.backgroundColor = newControlItemState;
+          document.getElementById("ci_"+controlItemId).style.borderColor = newControlItemState;
+          document.getElementById("ci_"+controlItemId).style.color = getColorByBgColor(newControlItemState);
+      } else if (controlItemType == 3) {
+          document.getElementById("ci_"+controlItemId).value = newControlItemState;
+      } else if (controlItemType == 4) {
+          var dropdownItem = $("#dropdown_item_ci_" + controlItemId + "_" + newControlItemState);
+          var dropdownToggle = $("#ci_" + controlItemId);
+          var dropdownItemText = dropdownItem.text();
+          dropdownToggle.html(dropdownItemText+' <span class="caret"></span>');
+      }
+    }
 
     var roomId = 1;
     var specialUserData = {jointype: "anonymous", authtoken: "b43242f4f24b4234234a42c423", user_id: 13};
 
-    var socket = io('http://localhost');
+    var socket = io('http://localhost:8080');
     socket.on('connect', function() {
+        console.log("Connected to main C&C server");
+    });
 
+    socket.on('controlsUpdate', function(controlsStatesArray) {
+        console.log("Received controls update from C&C server");
+        for (let key in controlsStatesArray) {
+            if (controlsStatesArray[key] != null) {
+              updateControlItemState (key, controlsStatesArray[key]);
+            }
+        }
+    });
+
+    socket.on('updateState', function(jsonData) {
+        var controlItemId = jsonData.control_item;
+        var newControlItemState = jsonData.new_state;
+        updateControlItemState(controlItemId, newControlItemState);
     });
 
     function sendControlItemState(controlItemId, newState) {
@@ -615,7 +658,7 @@
 
     function dropdownControlItemActionHandle(controlItemId, dropdownOptionIndex) {
         var dropdownItem = $("#dropdown_item_ci_" + controlItemId + "_" + dropdownOptionIndex);
-        var dropdownToggle = $("#dropdown_toggle_ci_" + controlItemId);
+        var dropdownToggle = $("#ci_" + controlItemId);
         var dropdownItemText = dropdownItem.text();
 
         sendControlItemState(controlItemId, dropdownOptionIndex);
@@ -623,8 +666,7 @@
         dropdownToggle.html(dropdownItemText+' <span class="caret"></span>');
     }
 
-    function handleRangeSliderAction (rangeSliderObject) {
-        var controlItemId = rangeSliderObject.id;
+    function handleRangeSliderAction (controlItemId, rangeSliderObject) {
         var rangeValue = rangeSliderObject.value;
 
         sendControlItemState(controlItemId, rangeValue);
@@ -664,9 +706,9 @@
               } else if (response[key].type == 2) {
                 $("#control_items_area").append('<p style="width:'+response[key].name_area_width_percent+'%;color:'+response[key].textcolor+';float:left;">'+response[key].name+'</p><button id="ci_'+controlItemId+'" data-control-item-type="2" style="width:'+response[key].control_item_width_percent+'%;" type="button" class="btn btn-sm btn-block btn-success" value="unspecified" onclick="handleclickcolor('+controlItemId+');" data-toggle="modal" data-target="#colorPickerModal">Wybierz kolor</button><div style="clear: both;"></div>');
               } else if (response[key].type == 3) {
-                $("#control_items_area").append('<p style="width:'+response[key].name_area_width_percent+'%;color:'+response[key].textcolor+';float:left;">'+response[key].name+'</p><input id="ci_'+controlItemId+'" style="width:'+response[key].control_item_width_percent+'%;" type="range" class="form-control-range" id="formControlRange" min="'+response[key].range_slider_from+'" max="'+response[key].range_slider_to+'" oninput="handleRangeSliderAction(this)" onchange="handleRangeSliderAction(this)"><div style="clear: both;"></div>');
+                $("#control_items_area").append('<p style="width:'+response[key].name_area_width_percent+'%;color:'+response[key].textcolor+';float:left;">'+response[key].name+'</p><input  data-control-item-type="3" id="ci_'+controlItemId+'" style="width:'+response[key].control_item_width_percent+'%;" type="range" class="form-control-range" id="formControlRange" min="'+response[key].range_slider_from+'" max="'+response[key].range_slider_to+'" oninput="handleRangeSliderAction('+controlItemId+',this)" onchange="handleRangeSliderAction('+controlItemId+',this)"><div style="clear: both;"></div>');
               } else if (response[key].type == 4) {
-                var dropdownButton = '<button id="dropdown_toggle_ci_'+controlItemId+'" style="width:100%;" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Niebieski</button>';
+                var dropdownButton = '<button id="ci_'+controlItemId+'"  data-control-item-type="4" style="width:100%;" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Niebieski</button>';
                 var comboboxData = '<div class="dropdown-menu">';
                 for (let key2 in response[key].combobox_options) {
                     comboboxData += '<a class="dropdown-item" onclick="dropdownControlItemActionHandle('+controlItemId+', '+key2+');" id="dropdown_item_ci_'+controlItemId+'_'+key2+'">' + response[key].combobox_options[key2] + '</a>';
@@ -682,7 +724,7 @@
               // $(this).parents('.card-body').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
            //});
           console.log(response);
-          // After finished all control items rendering
+          // After finished all control items rendering join room
           socket.emit('switchRoom', roomId, specialUserData);
         }
       });
@@ -692,10 +734,5 @@
 //  <div class="dropdown-divider"></div>
 
     </script>
-
-
-
-
-
   </body>
 </html>
