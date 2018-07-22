@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -10,299 +11,643 @@
     <title>Sterowanie24.pl - Steruj</title>
 
     <!-- Bootstrap core CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
     <!-- Custom styles for this template -->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
-<style>
-#sterowanie-logo {
-  width: 80%;
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
+  <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 
-}
+    <style>
+    /* If the map DIV doesn't have a size set up, it won't appear on the page */
+.gllpMap	{ width: 100%; height: 450px; }
 
-.farbtastic {
-  position: relative;
-}
-.farbtastic * {
-  position: absolute;
-  cursor: crosshair;
-}
-.farbtastic, .farbtastic .wheel {
-  width: 195px;
-  height: 195px;
-}
-.farbtastic .color, .farbtastic .overlay {
-  top: 47px;
-  left: 47px;
-  width: 101px;
-  height: 101px;
-}
-.farbtastic .wheel {
-  background: url(wheel.png) no-repeat;
-  width: 195px;
-  height: 195px;
-}
-.farbtastic .overlay {
-  background: url(mask.png) no-repeat;
-}
-.farbtastic .marker {
-  width: 17px;
-  height: 17px;
-  margin: -8px 0 0 -8px;
-  overflow: hidden;
-  background: url(marker.png) no-repeat;
-}
+        #sterowanie-logo {
+            width: 80%;
 
-</style>
+        }
 
-  </head>
+        .farbtastic {
+            position: relative;
+        }
 
-  <body>
-    <div id="menuu" style="text-align:center;padding: 0.5% 0.5% 0.5% 0.5%;position:absolute;top:85%;left:10%;background-color:#222222;border-style:solid;border-width:1em;border-color:#666666;border-radius:5px;display:none;">
-      <div class="form-item"><label for="color">Color:</label><input type="text" id="color" name="color" value="#111111" /></div><div id="picker"></div>
-    <button id="c" class="button pg" onclick="handlecolor('color', '8');">Confirm</button>
+        .farbtastic * {
+            position: absolute;
+            cursor: crosshair;
+        }
+
+        .farbtastic,
+        .farbtastic .wheel {
+            width: 195px;
+            height: 195px;
+        }
+
+        .farbtastic .color,
+        .farbtastic .overlay {
+            top: 47px;
+            left: 47px;
+            width: 101px;
+            height: 101px;
+        }
+
+        .farbtastic .wheel {
+            background: url(wheel.png) no-repeat;
+            width: 195px;
+            height: 195px;
+        }
+
+        .farbtastic .overlay {
+            background: url(mask.png) no-repeat;
+        }
+
+        .farbtastic .marker {
+            width: 17px;
+            height: 17px;
+            margin: -8px 0 0 -8px;
+            overflow: hidden;
+            background: url(marker.png) no-repeat;
+        }
+
+
+
+
+        .quantity {
+          position: relative;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button
+        {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+        input[type=number]
+        {
+          -moz-appearance: textfield;
+        }
+
+        .quantity input {
+          width: 45px;
+          height: 42px;
+          line-height: 1.65;
+          float: left;
+          display: block;
+          padding: 0;
+          margin: 0;
+          padding-left: 20px;
+          border: 1px solid #eee;
+        }
+
+        .quantity input:focus {
+          outline: 0;
+        }
+
+        .quantity-nav {
+          float: left;
+          position: relative;
+          height: 42px;
+        }
+
+        .quantity-button {
+          position: relative;
+          cursor: pointer;
+          border-left: 1px solid #eee;
+          width: 20px;
+          text-align: center;
+          color: #333;
+          font-size: 13px;
+          font-family: "Trebuchet MS", Helvetica, sans-serif !important;
+          line-height: 1.7;
+          -webkit-transform: translateX(-100%);
+          transform: translateX(-100%);
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          -o-user-select: none;
+          user-select: none;
+        }
+
+        .quantity-button.quantity-up {
+          position: absolute;
+          height: 50%;
+          top: 0;
+          border-bottom: 1px solid #eee;
+        }
+
+        .quantity-button.quantity-down {
+          position: absolute;
+          bottom: -1px;
+          height: 50%;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <div class="modal fade w-100" id="colorPickerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:100%;" role="document">
+            <div class="modal-content" style="width:100%;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="colorPickerModalLabel"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <center>
+                        <div id="menuu" style="card-deck mb-3 text-center">
+
+                            <div class="input-group mb-3  form-item">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Kolor</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="color" name="color" value="#111111">
+                            </div>
+
+
+
+                            <div id="picker"></div>
+
+
+                        </div>
+                    </center>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-minus-circle"></i> Anuluj</button>
+                    <button type="button" id="color_apply_button" class="btn btn-primary" data-dismiss="modal" onclick="handlecolor('color', this);"><i class="fas fa-plus"></i> Zatwierdź</button>
+                </div>
+            </div>
+        </div>
     </div>
-     <script type="text/javascript" charset="utf-8">
-      $(document).ready(function() {
-        $('#picker').farbtastic('#color');
-      });
-     </script>
+
+
+
+
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-      <h5 class="my-2 mr-md-auto font-weight-normal" style="width: 30%;"><img src="sterowanie24-black-100height.png" id="sterowanie-logo"></h5>
-      <nav class="my-2 my-md-0 mr-md-3">
-<center>
-        <a class="p-2 text-dark" href="#">O projekcie</a>
-        <a class="p-2 text-dark" href="#">Statystyki</a>
-            <a class="p-2 text-dark" href="#">Media</a>
-          <a class="p-2 text-dark" href="#">Galeria</a>
-        </center>
-      </nav>
-      <a class="btn btn-outline-primary" href="#">Zaloguj się</a>
+        <h5 class="my-2 mr-md-auto font-weight-normal" style="width: 30%;"><img src="sterowanie24-black-100height.png" id="sterowanie-logo"></h5>
+        <nav class="my-2 my-md-0 mr-md-3">
+            <center>
+                <a class="p-2 text-dark" href="#">O projekcie</a>
+                <a class="p-2 text-dark" href="#">Statystyki</a>
+                <a class="p-2 text-dark" href="#">Media</a>
+                <a class="p-2 text-dark" href="#">Galeria</a>
+            </center>
+        </nav>
+        <a class="btn btn-outline-primary" href="#">Zaloguj się</a>
     </div>
 
     <div class="text-center">
-      <h1 class="display-4">Dodaj nowe sterowanie</h1>
-      <p class="lead">Jakiś fajny opis ;D</p>
+        <h1 class="display-4">Dodaj nowe sterowanie</h1>
+        <p class="lead">Jakiś fajny opis ;D</p>
     </div>
 
 
 
     <div class="container">
-      <div class="card" style="width: 100%;">
-        <div class="card-header">
-          Podstawowe informacje
-        </div>
-        <div class="card-body">
-
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="inputGroup-sizing-default">Nazwa sterowania</span>
-        </div>
-        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-      </div>
-
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="inputGroup-sizing-default">Twórcy</span>
-        </div>
-        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-      </div>
-
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="inputGroup-sizing-default">Użyte urządzenia</span>
-        </div>
-        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-      </div>
-
-
-
-      <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" id="customCheck1">
-  <label class="custom-control-label" for="customCheck1">Anonimowe wyświetlanie sterowania dozwolone</label>
-</div>
-
-<div class="custom-control custom-checkbox">
-<input type="checkbox" class="custom-control-input" id="customCheck1">
-<label class="custom-control-label" for="customCheck1">Anonimowe sterowanie dozwolone</label>
-</div>
-
-        </div>
-          </div>
-<br>
-<div class="card" style="width: 100%;">
-  <div class="card-header">
-   Kolejkowanie i limity
-  </div>
-  <div class="card-body">
-    <div class="custom-control custom-radio">
-      <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">
-      <label class="custom-control-label" for="customRadio1">Proste limity</label>
-    </div>
-    <br>
-
-
-
-<div class="input-group mb-3">
-<div class="input-group-prepend">
-
-<div class="input-group-text">
-<input type="checkbox" id="customCheck1">
-
-</div>
-
-<span class="input-group-text">Limit sterujących użytkowników</span>
-</div>
-<input type="text" class="form-control" aria-label="Dollar amount (with dot and two decimal places)">
-</div>
-
-<div class="input-group mb-3">
-<div class="input-group-prepend">
-
-<div class="input-group-text">
-<input type="checkbox" id="customCheck1">
-
-</div>
-
-<span class="input-group-text">Limit sterujących anonimowo</span>
-</div>
-<input type="text" class="form-control" aria-label="Dollar amount (with dot and two decimal places)">
-</div>
-
-<br>
-<div class="custom-control custom-radio">
-  <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
-  <label class="custom-control-label" for="customRadio2">Kolejkowanie</label>
-</div>
-<br>
-<div class="input-group mb-3">
-<div class="input-group-prepend">
-
-<span class="input-group-text">Maksymalna liczba sterujących jednocześnie</span>
-</div>
-<input type="text" class="form-control" aria-label="Dollar amount (with dot and two decimal places)">
-</div>
-
-
-  </div>
-    </div>
-
-
-
-
-
-          <br>
-
-
-      <div class="card" style="width: 100%;">
-        <div class="card-header">
-          Elementy kontrolne
-        </div>
-        <div class="card-body">
-
-
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-         <i class="fas fa-plus"></i> Dodaj
-        </button>
-<hr>
-
-
-
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Nazwa</th>
-      <th scope="col">Typ</th>
-      <th scope="col">Podgląd</th>
-        <th scope="col">Opcje</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Jeden kolor kotek</td>
-      <td>Przycisk włącz/wyłącz</td>
-      <td><button type="button" class="btn btn-sm btn-block btn-success">Włącz</button></td>
-      <td style='white-space: nowrap'><button type="button" style="" class="w-50 btn btn-sm btn-block btn-warning"><i class="fas fa-cogs"></i></button>
-      <button type="button" style="" class=" w-50 btn btn-sm btn-block btn-danger"><i class="fas fa-trash-alt"></i></button></td>
-    </tr>
-
-  </tbody>
-</table>
-
-
-
-
-
-  </div>
-      </div>
-      <!-- Button trigger modal -->
-
-      <!-- Modal -->
-    <center>
-      <div class="modal fade w-100" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" style="width:100%;" role="document">
-          <div class="modal-content" style="width:100%;">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Dodaj element kontrolny</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+        <div class="card" style="width: 100%;">
+            <div class="card-header">
+                Podstawowe informacje
             </div>
-            <div class="modal-body">
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-default">Nazwa</span>
+            <div class="card-body">
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Nazwa sterowania</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                 </div>
-                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Twórcy</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Użyte urządzenia</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                </div>
+
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Opis</span>
+                    </div>
+                    <textarea class="form-control" aria-label="With textarea"></textarea>
+                </div>
+                <br>
+
+
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="anonymousDisplayCheck">
+                    <label class="custom-control-label" for="anonymousDisplayCheck">Anonimowe wyświetlanie sterowania dozwolone</label>
+                </div>
+
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="anonymousControlCheck">
+                    <label class="custom-control-label" for="anonymousControlCheck">Anonimowe sterowanie dozwolone</label>
+                </div>
+
+            </div>
+        </div>
+        <br>
+        <div class="card-deck mb-3 text-center">
+          <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                Kolejkowanie i limity
+            </div>
+            <div class="card-body">
+                <div class="custom-control custom-radio">
+                    <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">
+                    <label class="custom-control-label" for="customRadio1">Proste limity</label>
+                </div>
+                <br>
+
+
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+
+                        <div class="input-group-text">
+                            <input type="checkbox" id="customCheck1">
+
+                        </div>
+
+                        <span class="input-group-text">Limit sterujących użytkowników</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Dollar amount (with dot and two decimal places)">
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+
+                        <div class="input-group-text">
+                            <input type="checkbox" id="customCheck1">
+
+                        </div>
+
+                        <span class="input-group-text">Limit sterujących anonimowo</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Dollar amount (with dot and two decimal places)">
+                </div>
+
+                <br>
+                <div class="custom-control custom-radio">
+                    <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
+                    <label class="custom-control-label" for="customRadio2">Kolejkowanie</label>
+                </div>
+                <br>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+
+                        <span class="input-group-text">Maksymalna liczba sterujących jednocześnie</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Maksymalna liczba sterujących jednocześnie">
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+
+                        <span class="input-group-text">Czas sterowania dla pojedynczej osoby</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Czas sterowania dla pojedynczej osoby">
+                </div>
+
+                </div>
+            </div>
+            <div class="card mb-4 box-shadow">
+              <div class="card-header">
+                 Czas i data
+              </div>
+              <div class="card-body">
+
+
+  <div class="input-group mb-3">
+Data rozpoczęcia sterowania
+                    <input type="text" id="datepicker_start_date" class=" form-control" aria-label="Czas sterowania dla pojedynczej osoby">
+
+
               </div>
 
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-minus-circle"></i> Anuluj</button>
-              <button type="button" class="btn btn-primary"><i class="fas fa-save"></i> Zapisz</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </center>
+              <div class="input-group mb-3">
+              Planowana data zakończenia sterowania
+                    <input type="text" id="datepicker_end_date" class=" form-control" aria-label="Czas sterowania dla pojedynczej osoby">
 
-<div style="clear:both;"></div>
-      <footer class="pt-4 my-md-5 pt-md-5 border-top">
-        <div class="row">
-          <div class="col-12 col-md">
-            <img class="mb-2" src="../../assets/brand/bootstrap-solid.svg" alt="" width="24" height="24">
-            <small class="d-block mb-3 text-muted">&copy; 2017-2018 Sterowanie24.pl Team</small>
-          </div>
-          <div class="col-6 col-md">
-            <h5>O nas</h5>
-            <ul class="list-unstyled text-small">
-              <li><a class="text-muted" href="#">Kim jesteśmy</a></li>
-              <li><a class="text-muted" href="#">Media</a></li>
-              <li><a class="text-muted" href="#">Jak to się zaczęło?</a></li>
 
-            </ul>
-          </div>
-          <div class="col-6 col-md">
-            <h5>Zasoby</h5>
-            <ul class="list-unstyled text-small">
-              <li><a class="text-muted" href="#">A</a></li>
-              <li><a class="text-muted" href="#">B</a></li>
-              <li><a class="text-muted" href="#">C</a></li>
-              <li><a class="text-muted" href="#">D</a></li>
-            </ul>
-          </div>
-          <div class="col-6 col-md">
-            <h5>Współpraca</h5>
-            <ul class="list-unstyled text-small">
-              <li><a class="text-muted" href="#">Sponsorzy</a></li>
-              <li><a class="text-muted" href="#">Władze lokalne</a></li>
-              <li><a class="text-muted" href="#">Dołącz do nas!</a></li>
-              <li><a class="text-muted" href="#">Kontakt</a></li>
-            </ul>
-          </div>
+                          </div>
+
+                          <div class="custom-control custom-radio">
+                              <input type="radio" id="timeEnabledRadio1" name="timeEnabledRadio" class="custom-control-input">
+                              <label class="custom-control-label" for="timeEnabledRadio1">Sterowanie włączone cały czas</label>
+                          </div>
+
+                          <div class="custom-control custom-radio">
+                              <input type="radio" id="timeEnabledRadio2" name="timeEnabledRadio" class="custom-control-input">
+                              <label class="custom-control-label" for="timeEnabledRadio2">Sterowanie włączone w określonym czasie</label>
+                          </div>
+
+
+                          <div class="input-group mb-3">
+                          Czas włączenia sterowania
+                                <input type="text" id="timepicker_starting" class=" form-control" aria-label="Czas sterowania dla pojedynczej osoby">
+
+
+                                      </div>
+
+
+                                      <div class="input-group mb-3">
+                                      Czas wyłączenia sterowania
+                                            <input type="text" id="timepicker_ending" class=" form-control" aria-label="Czas sterowania dla pojedynczej osoby">
+
+
+                                                  </div>
+
+
+
+
+            </div>
+
+            </div>
+
+
+
+
+
         </div>
-      </footer>
+
+        <div class="card mb-4 box-shadow">
+          <div class="card-header">
+             Dokładna lokalizacja geograficzna
+          </div>
+          <div class="card-body">
+
+
+
+            <fieldset class="gllpLatlonPicker">
+
+
+
+
+
+            <div class="form-row align-items-center">
+                <div class="col-auto w-75">
+                    <input type="text" class="gllpSearchField form-control">
+                </div>
+                <div class="col-auto w-25">
+                    <button type="button" class="gllpSearchButton  btn btn-primary w-100" value=""> <i class="fas fa-search"></i> Szukaj</button>
+                </div>
+
+              </div>
+
+
+
+            <br/>
+            <div class="gllpMap" >Google Maps</div>
+<hr>
+            <div class="form-row">
+                <div class="col">
+                  <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+
+                          <span class="input-group-text">Szerokość geograficzna</span>
+                      </div>
+                      <input type="text" class="gllpLatitude form-control" placeholder="First name">
+                  </div>
+
+                </div>
+                <div class="col">
+                  <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+
+                          <span class="input-group-text">Długość geograficzna</span>
+                      </div>
+                      <input type="text" class="gllpLongitude form-control" placeholder="First name">
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+
+                          <span class="input-group-text">Powiększenie</span>
+                      </div>
+                      <input type="text" class="gllpZoom form-control" placeholder="First name">
+                  </div>
+                </div>
+
+
+
+              </div>
+
+  <button type="button" class="gllpUpdateButton btn btn-primary" value=""> <i class="fas fa-sync-alt"></i> Zaktualizuj mapę</button>
+
+
+            </fieldset>
+
+        </div>
+
+
+        </div>
+
+        <div class="card" style="width: 100%;">
+            <div class="card-header">
+                Elementy kontrolne
+            </div>
+            <div class="card-body">
+
+
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    <i class="fas fa-plus"></i> Dodaj
+                </button>
+                <hr>
+
+
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nazwa</th>
+                            <th scope="col">Typ</th>
+                            <th scope="col">Podgląd</th>
+                            <th scope="col">Opcje</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Jeden kolor kotek</td>
+                            <td>Przycisk włącz/wyłącz</td>
+                            <td><button type="button" class="btn btn-sm btn-block btn-success">Włącz</button></td>
+                            <td style='white-space: nowrap'><button type="button" style="" class="w-50 btn btn-sm btn-block btn-warning"><i class="fas fa-cogs"></i></button>
+                                <button type="button" style="" class=" w-50 btn btn-sm btn-block btn-danger"><i class="fas fa-trash-alt"></i></button></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+
+
+
+
+            </div>
+        </div>
+        <!-- Button trigger modal -->
+
+        <!-- Modal -->
+        <center>
+            <div class="modal fade w-100" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width:100%;" role="document">
+                    <div class="modal-content" style="width:100%;">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Dodaj element kontrolny</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Nazwa</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Opis</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                            </div>
+                            <div class="dropdown">
+                                Typ elementu kontrolnego:&nbsp;&nbsp;
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Przycisk on/off
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" id="type-controlitem-1">Przycisk on/off</a>
+                                    <a class="dropdown-item" id="type-controlitem-2">Przycisk multikolorowy</a>
+                                    <a class="dropdown-item" id="type-controlitem-3">Suwak</a>
+                                    <a class="dropdown-item" id="type-controlitem-4">Lista rozwijalna</a>
+                                </div>
+                            </div>
+                            <br>
+
+                            <div id="onoff-special-options-div">
+                              <h5>Opcje przycisku on/off</h5>
+                              <br>
+                              <button type="button" class="btn btn-success">Kolor przycisku Włącz</button>
+                              <button type="button" class="btn btn-danger">Kolor przycisku Wyłącz</button>
+
+                            </div>
+
+                            <div id="range-slider-special-options-div">
+                              <h5>Opcje suwaka</h5>
+                              <br>
+                              <div class="input-group mb-3 quantity">
+                                  <div class="input-group-prepend">
+                                      <span class="input-group-text" id="inputGroup-sizing-default">Minimalna wartość</span>
+                                  </div>
+                                  <input type="number" value="0" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                              </div>
+                              <div class="input-group mb-3 quantity">
+                                  <div class="input-group-prepend">
+                                      <span class="input-group-text" id="inputGroup-sizing-default">Maksymalna wartość</span>
+                                  </div>
+                                  <input type="number" value="255" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                              </div>
+
+
+                            </div>
+
+                            <div id="dropdown-special-options-div">
+                              <h5>Opcje listy rozwijalnej</h5>
+                              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                  <i class="fas fa-plus"></i> Dodaj nowy element
+                              </button>
+                               <br>  <br>
+                              <table class="table table-bordered">
+                                  <thead>
+                                      <tr>
+
+                                          <th scope="col">#</th>
+                                          <th scope="col">Nazwa</th>
+                                          <th scope="col">Kolor</th>
+                                            <th scope="col"></th>
+
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr>
+
+                                          <th >1</th>
+                                          <td>
+
+                                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                          </td>
+                                          <th>
+                                              <button type="button" style="" class="  btn btn-block btn-warning">Wybierz kolor</button>
+                                          </th>
+                                          <th>
+                                              <button type="button" style="" class="  btn btn-block btn-danger"><i class="fas fa-trash-alt"></i></button>
+                                          </th>
+                                          </tr>
+
+                                  </tbody>
+                              </table>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-minus-circle"></i> Anuluj</button>
+                            <button type="button" class="btn btn-primary"><i class="fas fa-save"></i> Zapisz</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </center>
+
+        <div style="clear:both;"></div>
+        <footer class="pt-4 my-md-5 pt-md-5 border-top">
+            <div class="row">
+                <div class="col-12 col-md">
+                    <img class="mb-2" src="../../assets/brand/bootstrap-solid.svg" alt="" width="24" height="24">
+                    <small class="d-block mb-3 text-muted">&copy; 2017-2018 Sterowanie24.pl Team</small>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>O nas</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="#">Kim jesteśmy</a></li>
+                        <li><a class="text-muted" href="#">Media</a></li>
+                        <li><a class="text-muted" href="#">Jak to się zaczęło?</a></li>
+
+                    </ul>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>Zasoby</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="#">A</a></li>
+                        <li><a class="text-muted" href="#">B</a></li>
+                        <li><a class="text-muted" href="#">C</a></li>
+                        <li><a class="text-muted" href="#">D</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>Współpraca</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="#">Sponsorzy</a></li>
+                        <li><a class="text-muted" href="#">Władze lokalne</a></li>
+                        <li><a class="text-muted" href="#">Dołącz do nas!</a></li>
+                        <li><a class="text-muted" href="#">Kontakt</a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
     </div>
 
 
@@ -311,364 +656,705 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
-    <script>
-      Holder.addTheme('thumb', {
-        bg: '#55595c',
-        fg: '#eceeef',
-        text: 'Thumbnail'
-      });
-    </script>
-    <script>
-    jQuery.fn.farbtastic = function (callback) {
-      $.farbtastic(this, callback);
-      return this;
-    };
-
-    jQuery.farbtastic = function (container, callback) {
-      var container = $(container).get(0);
-      return container.farbtastic || (container.farbtastic = new jQuery._farbtastic(container, callback));
-    }
-
-    jQuery._farbtastic = function (container, callback) {
-      // Store farbtastic object
-      var fb = this;
-
-      // Insert markup
-      $(container).html('<div class="farbtastic"><div class="color"></div><div class="wheel"></div><div class="overlay"></div><div class="h-marker marker"></div><div class="sl-marker marker"></div></div>');
-      var e = $('.farbtastic', container);
-      fb.wheel = $('.wheel', container).get(0);
-      // Dimensions
-      fb.radius = 84;
-      fb.square = 100;
-      fb.width = 194;
-
-      // Fix background PNGs in IE6
-      if (navigator.appVersion.match(/MSIE [0-6]\./)) {
-        $('*', e).each(function () {
-          if (this.currentStyle.backgroundImage != 'none') {
-            var image = this.currentStyle.backgroundImage;
-            image = this.currentStyle.backgroundImage.substring(5, image.length - 2);
-            $(this).css({
-              'backgroundImage': 'none',
-              'filter': "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=crop, src='" + image + "')"
-            });
-          }
-        });
-      }
-
-      /**
-       * Link to the given element(s) or callback.
-       */
-      fb.linkTo = function (callback) {
-        // Unbind previous nodes
-        if (typeof fb.callback == 'object') {
-          $(fb.callback).unbind('keyup', fb.updateValue);
-        }
-
-        // Reset color
-        fb.color = null;
-
-        // Bind callback or elements
-        if (typeof callback == 'function') {
-          fb.callback = callback;
-        }
-        else if (typeof callback == 'object' || typeof callback == 'string') {
-          fb.callback = $(callback);
-          fb.callback.bind('keyup', fb.updateValue);
-          if (fb.callback.get(0).value) {
-            fb.setColor(fb.callback.get(0).value);
-          }
-        }
-        return this;
-      }
-      fb.updateValue = function (event) {
-        if (this.value && this.value != fb.color) {
-          fb.setColor(this.value);
-        }
-      }
-
-      /**
-       * Change color with HTML syntax #123456
-       */
-      fb.setColor = function (color) {
-        var unpack = fb.unpack(color);
-        if (fb.color != color && unpack) {
-          fb.color = color;
-          fb.rgb = unpack;
-          fb.hsl = fb.RGBToHSL(fb.rgb);
-          fb.updateDisplay();
-        }
-        return this;
-      }
-
-      /**
-       * Change color with HSL triplet [0..1, 0..1, 0..1]
-       */
-      fb.setHSL = function (hsl) {
-        fb.hsl = hsl;
-        fb.rgb = fb.HSLToRGB(hsl);
-        fb.color = fb.pack(fb.rgb);
-        fb.updateDisplay();
-        return this;
-      }
-
-      /////////////////////////////////////////////////////
-
-      /**
-       * Retrieve the coordinates of the given event relative to the center
-       * of the widget.
-       */
-      fb.widgetCoords = function (event) {
-        var x, y;
-        var el = event.target || event.srcElement;
-        var reference = fb.wheel;
-
-        if (typeof event.offsetX != 'undefined') {
-          // Use offset coordinates and find common offsetParent
-          var pos = { x: event.offsetX, y: event.offsetY };
-
-          // Send the coordinates upwards through the offsetParent chain.
-          var e = el;
-          while (e) {
-            e.mouseX = pos.x;
-            e.mouseY = pos.y;
-            pos.x += e.offsetLeft;
-            pos.y += e.offsetTop;
-            e = e.offsetParent;
-          }
-
-          // Look for the coordinates starting from the wheel widget.
-          var e = reference;
-          var offset = { x: 0, y: 0 }
-          while (e) {
-            if (typeof e.mouseX != 'undefined') {
-              x = e.mouseX - offset.x;
-              y = e.mouseY - offset.y;
-              break;
-            }
-            offset.x += e.offsetLeft;
-            offset.y += e.offsetTop;
-            e = e.offsetParent;
-          }
-
-          // Reset stored coordinates
-          e = el;
-          while (e) {
-            e.mouseX = undefined;
-            e.mouseY = undefined;
-            e = e.offsetParent;
-          }
-        }
-        else {
-          // Use absolute coordinates
-          var pos = fb.absolutePosition(reference);
-          x = (event.pageX || 0*(event.clientX + $('html').get(0).scrollLeft)) - pos.x;
-          y = (event.pageY || 0*(event.clientY + $('html').get(0).scrollTop)) - pos.y;
-        }
-        // Subtract distance to middle
-        return { x: x - fb.width / 2, y: y - fb.width / 2 };
-      }
-
-      /**
-       * Mousedown handler
-       */
-      fb.mousedown = function (event) {
-        // Capture mouse
-        if (!document.dragging) {
-          $(document).bind('mousemove', fb.mousemove).bind('mouseup', fb.mouseup);
-          document.dragging = true;
-        }
-
-        // Check which area is being dragged
-        var pos = fb.widgetCoords(event);
-        fb.circleDrag = Math.max(Math.abs(pos.x), Math.abs(pos.y)) * 2 > fb.square;
-
-        // Process
-        fb.mousemove(event);
-        return false;
-      }
-
-      /**
-       * Mousemove handler
-       */
-      fb.mousemove = function (event) {
-        // Get coordinates relative to color picker center
-        var pos = fb.widgetCoords(event);
-
-        // Set new HSL parameters
-        if (fb.circleDrag) {
-          var hue = Math.atan2(pos.x, -pos.y) / 6.28;
-          if (hue < 0) hue += 1;
-          fb.setHSL([hue, fb.hsl[1], fb.hsl[2]]);
-        }
-        else {
-          var sat = Math.max(0, Math.min(1, -(pos.x / fb.square) + .5));
-          var lum = Math.max(0, Math.min(1, -(pos.y / fb.square) + .5));
-          fb.setHSL([fb.hsl[0], sat, lum]);
-        }
-        return false;
-      }
-
-      /**
-       * Mouseup handler
-       */
-      fb.mouseup = function () {
-        // Uncapture mouse
-        $(document).unbind('mousemove', fb.mousemove);
-        $(document).unbind('mouseup', fb.mouseup);
-        document.dragging = false;
-      }
-
-      /**
-       * Update the markers and styles
-       */
-      fb.updateDisplay = function () {
-        // Markers
-        var angle = fb.hsl[0] * 6.28;
-        $('.h-marker', e).css({
-          left: Math.round(Math.sin(angle) * fb.radius + fb.width / 2) + 'px',
-          top: Math.round(-Math.cos(angle) * fb.radius + fb.width / 2) + 'px'
-        });
-
-        $('.sl-marker', e).css({
-          left: Math.round(fb.square * (.5 - fb.hsl[1]) + fb.width / 2) + 'px',
-          top: Math.round(fb.square * (.5 - fb.hsl[2]) + fb.width / 2) + 'px'
-        });
-
-        // Saturation/Luminance gradient
-        $('.color', e).css('backgroundColor', fb.pack(fb.HSLToRGB([fb.hsl[0], 1, 0.5])));
-
-        // Linked elements or callback
-        if (typeof fb.callback == 'object') {
-          // Set background/foreground color
-          $(fb.callback).css({
-            backgroundColor: fb.color,
-            color: fb.hsl[2] > 0.5 ? '#000' : '#fff'
-          });
-
-          // Change linked value
-          $(fb.callback).each(function() {
-            if (this.value && this.value != fb.color) {
-              this.value = fb.color;
-            }
-          });
-        }
-        else if (typeof fb.callback == 'function') {
-          fb.callback.call(fb, fb.color);
-        }
-      }
-
-      /**
-       * Get absolute position of element
-       */
-      fb.absolutePosition = function (el) {
-        var r = { x: el.offsetLeft, y: el.offsetTop };
-        // Resolve relative to offsetParent
-        if (el.offsetParent) {
-          var tmp = fb.absolutePosition(el.offsetParent);
-          r.x += tmp.x;
-          r.y += tmp.y;
-        }
-        return r;
-      };
-
-      /* Various color utility functions */
-      fb.pack = function (rgb) {
-        var r = Math.round(rgb[0] * 255);
-        var g = Math.round(rgb[1] * 255);
-        var b = Math.round(rgb[2] * 255);
-        return '#' + (r < 16 ? '0' : '') + r.toString(16) +
-               (g < 16 ? '0' : '') + g.toString(16) +
-               (b < 16 ? '0' : '') + b.toString(16);
-      }
-
-      fb.unpack = function (color) {
-        if (color.length == 7) {
-          return [parseInt('0x' + color.substring(1, 3)) / 255,
-            parseInt('0x' + color.substring(3, 5)) / 255,
-            parseInt('0x' + color.substring(5, 7)) / 255];
-        }
-        else if (color.length == 4) {
-          return [parseInt('0x' + color.substring(1, 2)) / 15,
-            parseInt('0x' + color.substring(2, 3)) / 15,
-            parseInt('0x' + color.substring(3, 4)) / 15];
-        }
-      }
-
-      fb.HSLToRGB = function (hsl) {
-        var m1, m2, r, g, b;
-        var h = hsl[0], s = hsl[1], l = hsl[2];
-        m2 = (l <= 0.5) ? l * (s + 1) : l + s - l*s;
-        m1 = l * 2 - m2;
-        return [this.hueToRGB(m1, m2, h+0.33333),
-            this.hueToRGB(m1, m2, h),
-            this.hueToRGB(m1, m2, h-0.33333)];
-      }
-
-      fb.hueToRGB = function (m1, m2, h) {
-        h = (h < 0) ? h + 1 : ((h > 1) ? h - 1 : h);
-        if (h * 6 < 1) return m1 + (m2 - m1) * h * 6;
-        if (h * 2 < 1) return m2;
-        if (h * 3 < 2) return m1 + (m2 - m1) * (0.66666 - h) * 6;
-        return m1;
-      }
-
-      fb.RGBToHSL = function (rgb) {
-        var min, max, delta, h, s, l;
-        var r = rgb[0], g = rgb[1], b = rgb[2];
-        min = Math.min(r, Math.min(g, b));
-        max = Math.max(r, Math.max(g, b));
-        delta = max - min;
-        l = (min + max) / 2;
-        s = 0;
-        if (l > 0 && l < 1) {
-          s = delta / (l < 0.5 ? (2 * l) : (2 - 2 * l));
-        }
-        h = 0;
-        if (delta > 0) {
-          if (max == r && max != g) h += (g - b) / delta;
-          if (max == g && max != b) h += (2 + (b - r) / delta);
-          if (max == b && max != r) h += (4 + (r - g) / delta);
-          h /= 6;
-        }
-        return [h, s, l];
-      }
-
-      // Install mousedown handler (the others are set on the document on-demand)
-      $('*', e).mousedown(fb.mousedown);
-
-        // Init color
-      fb.setColor('#000000');
-
-      // Set linked elements/callback
-      if (callback) {
-        fb.linkTo(callback);
-      }
-    }
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/js/gijgo.min.js" type="text/javascript"></script>
+      <link href="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" charset="utf-8">
 
 
+    /**
+     *
+     * A JQUERY GOOGLE MAPS LATITUDE AND LONGITUDE LOCATION PICKER
+     * version 1.2
+     *
+     * Supports multiple maps. Works on touchscreen. Easy to customize markup and CSS.
+     *
+     * To see a live demo, go to:
+     * http://www.wimagguc.com/projects/jquery-latitude-longitude-picker-gmaps/
+     *
+     * by Richard Dancsi
+     * http://www.wimagguc.com/
+     *
+     */
+
+    (function($) {
+
+    // for ie9 doesn't support debug console >>>
+    if (!window.console) window.console = {};
+    if (!window.console.log) window.console.log = function () { };
+    // ^^^
+
+    $.fn.gMapsLatLonPicker = (function() {
+
+    	var _self = this;
+
+    	///////////////////////////////////////////////////////////////////////////////////////////////
+    	// PARAMETERS (MODIFY THIS PART) //////////////////////////////////////////////////////////////
+    	_self.params = {
+    		defLat : 0,
+    		defLng : 0,
+    		defZoom : 1,
+    		queryLocationNameWhenLatLngChanges: true,
+    		queryElevationWhenLatLngChanges: true,
+    		mapOptions : {
+    			mapTypeId: google.maps.MapTypeId.ROADMAP,
+    			mapTypeControl: false,
+    			disableDoubleClickZoom: true,
+    			zoomControlOptions: true,
+    			streetViewControl: false
+    		},
+    		strings : {
+    			markerText : "Drag this Marker",
+    			error_empty_field : "Couldn't find coordinates for this place",
+    			error_no_results : "Couldn't find coordinates for this place"
+    		},
+    		displayError : function(message) {
+    			alert(message);
+    		}
+    	};
 
 
-    function handlecolor(idfarb,id){
-    	//var button=document.getElementById(id);
-    	//button.classList.toggle("pgalt");
-    	//button.classList.toggle("pg");
-    	var color = document.getElementById(idfarb).value;
-    	document.getElementById(id).style.backgroundColor = color;
-    }
-    function handleclickcolor(id){
-    	//var button=document.getElementById(id);
-    	//button.classList.toggle("pgalt");
-    	//button.classList.toggle("pg");
-    	if(!$('#menuu').is(":visible")) {
-    	$("#" + id).show();
+    	///////////////////////////////////////////////////////////////////////////////////////////////
+    	// VARIABLES USED BY THE FUNCTION (DON'T MODIFY THIS PART) ////////////////////////////////////
+    	_self.vars = {
+    		ID : null,
+    		LATLNG : null,
+    		map : null,
+    		marker : null,
+    		geocoder : null
+    	};
+
+    	///////////////////////////////////////////////////////////////////////////////////////////////
+    	// PRIVATE FUNCTIONS FOR MANIPULATING DATA ////////////////////////////////////////////////////
+    	var setPosition = function(position) {
+    		_self.vars.marker.setPosition(position);
+    		_self.vars.map.panTo(position);
+
+    		$(_self.vars.cssID + ".gllpZoom").val( _self.vars.map.getZoom() );
+    		$(_self.vars.cssID + ".gllpLongitude").val( position.lng() );
+    		$(_self.vars.cssID + ".gllpLatitude").val( position.lat() );
+
+    		$(_self.vars.cssID).trigger("location_changed", $(_self.vars.cssID));
+
+    		if (_self.params.queryLocationNameWhenLatLngChanges) {
+    			getLocationName(position);
+    		}
+    		if (_self.params.queryElevationWhenLatLngChanges) {
+    			getElevation(position);
+    		}
+    	};
+
+    	// for reverse geocoding
+    	var getLocationName = function(position) {
+    		var latlng = new google.maps.LatLng(position.lat(), position.lng());
+    		_self.vars.geocoder.geocode({'latLng': latlng}, function(results, status) {
+    			if (status == google.maps.GeocoderStatus.OK && results[1]) {
+    				$(_self.vars.cssID + ".gllpLocationName").val(results[1].formatted_address);
+    			} else {
+    				$(_self.vars.cssID + ".gllpLocationName").val("");
+    			}
+    			$(_self.vars.cssID).trigger("location_name_changed", $(_self.vars.cssID));
+    		});
+    	};
+
+    	// for getting the elevation value for a position
+    	var getElevation = function(position) {
+    		var latlng = new google.maps.LatLng(position.lat(), position.lng());
+
+    		var locations = [latlng];
+
+    		var positionalRequest = { 'locations': locations };
+
+    		_self.vars.elevator.getElevationForLocations(positionalRequest, function(results, status) {
+    			if (status == google.maps.ElevationStatus.OK) {
+    				if (results[0]) {
+    					$(_self.vars.cssID + ".gllpElevation").val( results[0].elevation.toFixed(3));
+    				} else {
+    					$(_self.vars.cssID + ".gllpElevation").val("");
+    				}
+    			} else {
+    				$(_self.vars.cssID + ".gllpElevation").val("");
+    			}
+    			$(_self.vars.cssID).trigger("elevation_changed", $(_self.vars.cssID));
+    		});
+    	};
+
+    	// search function
+    	var performSearch = function(string, silent) {
+    		if (string == "") {
+    			if (!silent) {
+    				_self.params.displayError( _self.params.strings.error_empty_field );
+    			}
+    			return;
+    		}
+    		_self.vars.geocoder.geocode(
+    			{"address": string},
+    			function(results, status) {
+    				if (status == google.maps.GeocoderStatus.OK) {
+    					$(_self.vars.cssID + ".gllpZoom").val(11);
+    					_self.vars.map.setZoom( parseInt($(_self.vars.cssID + ".gllpZoom").val()) );
+    					setPosition( results[0].geometry.location );
+    				} else {
+    					if (!silent) {
+    						_self.params.displayError( _self.params.strings.error_no_results );
+    					}
+    				}
+    			}
+    		);
+    	};
+
+    	///////////////////////////////////////////////////////////////////////////////////////////////
+    	// PUBLIC FUNCTIONS  //////////////////////////////////////////////////////////////////////////
+    	var publicfunc = {
+
+    		// INITIALIZE MAP ON DIV //////////////////////////////////////////////////////////////////
+    		init : function(object) {
+
+    			if ( !$(object).attr("id") ) {
+    				if ( $(object).attr("name") ) {
+    					$(object).attr("id", $(object).attr("name") );
+    				} else {
+    					$(object).attr("id", "_MAP_" + Math.ceil(Math.random() * 10000) );
+    				}
+    			}
+
+    			_self.vars.ID = $(object).attr("id");
+    			_self.vars.cssID = "#" + _self.vars.ID + " ";
+
+    			_self.params.defLat  = $(_self.vars.cssID + ".gllpLatitude").val()  ? $(_self.vars.cssID + ".gllpLatitude").val()		: _self.params.defLat;
+    			_self.params.defLng  = $(_self.vars.cssID + ".gllpLongitude").val() ? $(_self.vars.cssID + ".gllpLongitude").val()	    : _self.params.defLng;
+    			_self.params.defZoom = $(_self.vars.cssID + ".gllpZoom").val()      ? parseInt($(_self.vars.cssID + ".gllpZoom").val()) : _self.params.defZoom;
+
+    			_self.vars.LATLNG = new google.maps.LatLng(_self.params.defLat, _self.params.defLng);
+
+    			_self.vars.MAPOPTIONS		 = _self.params.mapOptions;
+    			_self.vars.MAPOPTIONS.zoom   = _self.params.defZoom;
+    			_self.vars.MAPOPTIONS.center = _self.vars.LATLNG;
+
+    			_self.vars.map = new google.maps.Map($(_self.vars.cssID + ".gllpMap").get(0), _self.vars.MAPOPTIONS);
+    			_self.vars.geocoder = new google.maps.Geocoder();
+    			_self.vars.elevator = new google.maps.ElevationService();
+
+    			_self.vars.marker = new google.maps.Marker({
+    				position: _self.vars.LATLNG,
+    				map: _self.vars.map,
+    				title: _self.params.strings.markerText,
+    				draggable: true
+    			});
+
+    			// Set position on doubleclick
+    			google.maps.event.addListener(_self.vars.map, 'dblclick', function(event) {
+    				setPosition(event.latLng);
+    			});
+
+    			// Set position on marker move
+    			google.maps.event.addListener(_self.vars.marker, 'dragend', function(event) {
+    				setPosition(_self.vars.marker.position);
+    			});
+
+    			// Set zoom feld's value when user changes zoom on the map
+    			google.maps.event.addListener(_self.vars.map, 'zoom_changed', function(event) {
+    				$(_self.vars.cssID + ".gllpZoom").val( _self.vars.map.getZoom() );
+    				$(_self.vars.cssID).trigger("location_changed", $(_self.vars.cssID));
+    			});
+
+    			// Update location and zoom values based on input field's value
+    			$(_self.vars.cssID + ".gllpUpdateButton").bind("click", function() {
+    				var lat = $(_self.vars.cssID + ".gllpLatitude").val();
+    				var lng = $(_self.vars.cssID + ".gllpLongitude").val();
+    				var latlng = new google.maps.LatLng(lat, lng);
+    				_self.vars.map.setZoom( parseInt( $(_self.vars.cssID + ".gllpZoom").val() ) );
+    				setPosition(latlng);
+    			});
+
+    			// Search function by search button
+    			$(_self.vars.cssID + ".gllpSearchButton").bind("click", function() {
+    				performSearch( $(_self.vars.cssID + ".gllpSearchField").val(), false );
+    			});
+
+    			// Search function by gllp_perform_search listener
+    			$(document).bind("gllp_perform_search", function(event, object) {
+    				performSearch( $(object).attr('string'), true );
+    			});
+
+    			// Zoom function triggered by gllp_perform_zoom listener
+    			$(document).bind("gllp_update_fields", function(event) {
+    				var lat = $(_self.vars.cssID + ".gllpLatitude").val();
+    				var lng = $(_self.vars.cssID + ".gllpLongitude").val();
+    				var latlng = new google.maps.LatLng(lat, lng);
+    				_self.vars.map.setZoom( parseInt( $(_self.vars.cssID + ".gllpZoom").val() ) );
+    				setPosition(latlng);
+    			});
+    		},
+
+    		// EXPORT PARAMS TO EASILY MODIFY THEM ////////////////////////////////////////////////////
+    		params : _self.params
+
+    	};
+
+    	return publicfunc;
+    });
+
+    $(document).ready( function() {
+    	if (!$.gMapsLatLonPickerNoAutoInit) {
+    		$(".gllpLatlonPicker").each(function () {
+    			$obj = $(document).gMapsLatLonPicker();
+    			$obj.init( $(this) );
+    		});
     	}
-    	else{
-            $('#' + id).hide();
-        }
-    }
+    });
+
+    $(document).bind("location_changed", function(event, object) {
+    	console.log("changed: " + $(object).attr('id') );
+    });
+
+    }(jQuery));
+
+
+
+
+
+
+
+
+        $(document).ready(function() {
+            $('#picker').farbtastic('#color');
+        });
+
+
+                $('#datepicker_start_date').datepicker({
+                  uiLibrary: 'bootstrap4'
+                });
+                $('#datepicker_end_date').datepicker({
+                  uiLibrary: 'bootstrap4'
+                });
+
+
+        $('#timepicker_starting').timepicker({
+            uiLibrary: 'bootstrap4'
+        });
+
+
+
+        $('#timepicker_ending').timepicker({
+            uiLibrary: 'bootstrap4'
+        });
+
 
     </script>
-  </body>
+    <script>
+        Holder.addTheme('thumb', {
+            bg: '#55595c',
+            fg: '#eceeef',
+            text: 'Thumbnail'
+        });
+    </script>
+    <script>
+        jQuery.fn.farbtastic = function(callback) {
+            $.farbtastic(this, callback);
+            return this;
+        };
+
+        jQuery.farbtastic = function(container, callback) {
+            var container = $(container).get(0);
+            return container.farbtastic || (container.farbtastic = new jQuery._farbtastic(container, callback));
+        }
+
+        jQuery._farbtastic = function(container, callback) {
+            // Store farbtastic object
+            var fb = this;
+
+            // Insert markup
+            $(container).html('<div class="farbtastic"><div class="color"></div><div class="wheel"></div><div class="overlay"></div><div class="h-marker marker"></div><div class="sl-marker marker"></div></div>');
+            var e = $('.farbtastic', container);
+            fb.wheel = $('.wheel', container).get(0);
+            // Dimensions
+            fb.radius = 84;
+            fb.square = 100;
+            fb.width = 194;
+
+            // Fix background PNGs in IE6
+            if (navigator.appVersion.match(/MSIE [0-6]\./)) {
+                $('*', e).each(function() {
+                    if (this.currentStyle.backgroundImage != 'none') {
+                        var image = this.currentStyle.backgroundImage;
+                        image = this.currentStyle.backgroundImage.substring(5, image.length - 2);
+                        $(this).css({
+                            'backgroundImage': 'none',
+                            'filter': "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=crop, src='" + image + "')"
+                        });
+                    }
+                });
+            }
+
+            /**
+             * Link to the given element(s) or callback.
+             */
+            fb.linkTo = function(callback) {
+                // Unbind previous nodes
+                if (typeof fb.callback == 'object') {
+                    $(fb.callback).unbind('keyup', fb.updateValue);
+                }
+
+                // Reset color
+                fb.color = null;
+
+                // Bind callback or elements
+                if (typeof callback == 'function') {
+                    fb.callback = callback;
+                } else if (typeof callback == 'object' || typeof callback == 'string') {
+                    fb.callback = $(callback);
+                    fb.callback.bind('keyup', fb.updateValue);
+                    if (fb.callback.get(0).value) {
+                        fb.setColor(fb.callback.get(0).value);
+                    }
+                }
+                return this;
+            }
+            fb.updateValue = function(event) {
+                if (this.value && this.value != fb.color) {
+                    fb.setColor(this.value);
+                }
+            }
+
+            /**
+             * Change color with HTML syntax #123456
+             */
+            fb.setColor = function(color) {
+                var unpack = fb.unpack(color);
+                if (fb.color != color && unpack) {
+                    fb.color = color;
+                    fb.rgb = unpack;
+                    fb.hsl = fb.RGBToHSL(fb.rgb);
+                    fb.updateDisplay();
+                }
+                return this;
+            }
+
+            /**
+             * Change color with HSL triplet [0..1, 0..1, 0..1]
+             */
+            fb.setHSL = function(hsl) {
+                fb.hsl = hsl;
+                fb.rgb = fb.HSLToRGB(hsl);
+                fb.color = fb.pack(fb.rgb);
+                fb.updateDisplay();
+                return this;
+            }
+
+            /////////////////////////////////////////////////////
+
+            /**
+             * Retrieve the coordinates of the given event relative to the center
+             * of the widget.
+             */
+            fb.widgetCoords = function(event) {
+                var x, y;
+                var el = event.target || event.srcElement;
+                var reference = fb.wheel;
+
+                if (typeof event.offsetX != 'undefined') {
+                    // Use offset coordinates and find common offsetParent
+                    var pos = {
+                        x: event.offsetX,
+                        y: event.offsetY
+                    };
+
+                    // Send the coordinates upwards through the offsetParent chain.
+                    var e = el;
+                    while (e) {
+                        e.mouseX = pos.x;
+                        e.mouseY = pos.y;
+                        pos.x += e.offsetLeft;
+                        pos.y += e.offsetTop;
+                        e = e.offsetParent;
+                    }
+
+                    // Look for the coordinates starting from the wheel widget.
+                    var e = reference;
+                    var offset = {
+                        x: 0,
+                        y: 0
+                    }
+                    while (e) {
+                        if (typeof e.mouseX != 'undefined') {
+                            x = e.mouseX - offset.x;
+                            y = e.mouseY - offset.y;
+                            break;
+                        }
+                        offset.x += e.offsetLeft;
+                        offset.y += e.offsetTop;
+                        e = e.offsetParent;
+                    }
+
+                    // Reset stored coordinates
+                    e = el;
+                    while (e) {
+                        e.mouseX = undefined;
+                        e.mouseY = undefined;
+                        e = e.offsetParent;
+                    }
+                } else {
+                    // Use absolute coordinates
+                    var pos = fb.absolutePosition(reference);
+                    x = (event.pageX || 0 * (event.clientX + $('html').get(0).scrollLeft)) - pos.x;
+                    y = (event.pageY || 0 * (event.clientY + $('html').get(0).scrollTop)) - pos.y;
+                }
+                // Subtract distance to middle
+                return {
+                    x: x - fb.width / 2,
+                    y: y - fb.width / 2
+                };
+            }
+
+            /**
+             * Mousedown handler
+             */
+            fb.mousedown = function(event) {
+                // Capture mouse
+                if (!document.dragging) {
+                    $(document).bind('mousemove', fb.mousemove).bind('mouseup', fb.mouseup);
+                    document.dragging = true;
+                }
+
+                // Check which area is being dragged
+                var pos = fb.widgetCoords(event);
+                fb.circleDrag = Math.max(Math.abs(pos.x), Math.abs(pos.y)) * 2 > fb.square;
+
+                // Process
+                fb.mousemove(event);
+                return false;
+            }
+
+            /**
+             * Mousemove handler
+             */
+            fb.mousemove = function(event) {
+                // Get coordinates relative to color picker center
+                var pos = fb.widgetCoords(event);
+
+                // Set new HSL parameters
+                if (fb.circleDrag) {
+                    var hue = Math.atan2(pos.x, -pos.y) / 6.28;
+                    if (hue < 0) hue += 1;
+                    fb.setHSL([hue, fb.hsl[1], fb.hsl[2]]);
+                } else {
+                    var sat = Math.max(0, Math.min(1, -(pos.x / fb.square) + .5));
+                    var lum = Math.max(0, Math.min(1, -(pos.y / fb.square) + .5));
+                    fb.setHSL([fb.hsl[0], sat, lum]);
+                }
+                return false;
+            }
+
+            /**
+             * Mouseup handler
+             */
+            fb.mouseup = function() {
+                // Uncapture mouse
+                $(document).unbind('mousemove', fb.mousemove);
+                $(document).unbind('mouseup', fb.mouseup);
+                document.dragging = false;
+            }
+
+            /**
+             * Update the markers and styles
+             */
+            fb.updateDisplay = function() {
+                // Markers
+                var angle = fb.hsl[0] * 6.28;
+                $('.h-marker', e).css({
+                    left: Math.round(Math.sin(angle) * fb.radius + fb.width / 2) + 'px',
+                    top: Math.round(-Math.cos(angle) * fb.radius + fb.width / 2) + 'px'
+                });
+
+                $('.sl-marker', e).css({
+                    left: Math.round(fb.square * (.5 - fb.hsl[1]) + fb.width / 2) + 'px',
+                    top: Math.round(fb.square * (.5 - fb.hsl[2]) + fb.width / 2) + 'px'
+                });
+
+                // Saturation/Luminance gradient
+                $('.color', e).css('backgroundColor', fb.pack(fb.HSLToRGB([fb.hsl[0], 1, 0.5])));
+
+                // Linked elements or callback
+                if (typeof fb.callback == 'object') {
+                    // Set background/foreground color
+                    $(fb.callback).css({
+                        backgroundColor: fb.color,
+                        color: fb.hsl[2] > 0.5 ? '#000' : '#fff'
+                    });
+
+                    // Change linked value
+                    $(fb.callback).each(function() {
+                        if (this.value && this.value != fb.color) {
+                            this.value = fb.color;
+                        }
+                    });
+                } else if (typeof fb.callback == 'function') {
+                    fb.callback.call(fb, fb.color);
+                }
+            }
+
+            /**
+             * Get absolute position of element
+             */
+            fb.absolutePosition = function(el) {
+                var r = {
+                    x: el.offsetLeft,
+                    y: el.offsetTop
+                };
+                // Resolve relative to offsetParent
+                if (el.offsetParent) {
+                    var tmp = fb.absolutePosition(el.offsetParent);
+                    r.x += tmp.x;
+                    r.y += tmp.y;
+                }
+                return r;
+            };
+
+            /* Various color utility functions */
+            fb.pack = function(rgb) {
+                var r = Math.round(rgb[0] * 255);
+                var g = Math.round(rgb[1] * 255);
+                var b = Math.round(rgb[2] * 255);
+                return '#' + (r < 16 ? '0' : '') + r.toString(16) +
+                    (g < 16 ? '0' : '') + g.toString(16) +
+                    (b < 16 ? '0' : '') + b.toString(16);
+            }
+
+            fb.unpack = function(color) {
+                if (color.length == 7) {
+                    return [parseInt('0x' + color.substring(1, 3)) / 255,
+                        parseInt('0x' + color.substring(3, 5)) / 255,
+                        parseInt('0x' + color.substring(5, 7)) / 255
+                    ];
+                } else if (color.length == 4) {
+                    return [parseInt('0x' + color.substring(1, 2)) / 15,
+                        parseInt('0x' + color.substring(2, 3)) / 15,
+                        parseInt('0x' + color.substring(3, 4)) / 15
+                    ];
+                }
+            }
+
+            fb.HSLToRGB = function(hsl) {
+                var m1, m2, r, g, b;
+                var h = hsl[0],
+                    s = hsl[1],
+                    l = hsl[2];
+                m2 = (l <= 0.5) ? l * (s + 1) : l + s - l * s;
+                m1 = l * 2 - m2;
+                return [this.hueToRGB(m1, m2, h + 0.33333),
+                    this.hueToRGB(m1, m2, h),
+                    this.hueToRGB(m1, m2, h - 0.33333)
+                ];
+            }
+
+            fb.hueToRGB = function(m1, m2, h) {
+                h = (h < 0) ? h + 1 : ((h > 1) ? h - 1 : h);
+                if (h * 6 < 1) return m1 + (m2 - m1) * h * 6;
+                if (h * 2 < 1) return m2;
+                if (h * 3 < 2) return m1 + (m2 - m1) * (0.66666 - h) * 6;
+                return m1;
+            }
+
+            fb.RGBToHSL = function(rgb) {
+                var min, max, delta, h, s, l;
+                var r = rgb[0],
+                    g = rgb[1],
+                    b = rgb[2];
+                min = Math.min(r, Math.min(g, b));
+                max = Math.max(r, Math.max(g, b));
+                delta = max - min;
+                l = (min + max) / 2;
+                s = 0;
+                if (l > 0 && l < 1) {
+                    s = delta / (l < 0.5 ? (2 * l) : (2 - 2 * l));
+                }
+                h = 0;
+                if (delta > 0) {
+                    if (max == r && max != g) h += (g - b) / delta;
+                    if (max == g && max != b) h += (2 + (b - r) / delta);
+                    if (max == b && max != r) h += (4 + (r - g) / delta);
+                    h /= 6;
+                }
+                return [h, s, l];
+            }
+
+            // Install mousedown handler (the others are set on the document on-demand)
+            $('*', e).mousedown(fb.mousedown);
+
+            // Init color
+            fb.setColor('#000000');
+
+            // Set linked elements/callback
+            if (callback) {
+                fb.linkTo(callback);
+            }
+        }
+
+
+
+
+        function handlecolor(idfarb, id) {
+            //var button=document.getElementById(id);
+            //button.classList.toggle("pgalt");
+            //button.classList.toggle("pg");
+            var color = document.getElementById(idfarb).value;
+            document.getElementById(id).style.backgroundColor = color;
+        }
+
+        function handleclickcolor(id) {
+            //var button=document.getElementById(id);
+            //button.classList.toggle("pgalt");
+            //button.classList.toggle("pg");
+            if (!$('#menuu').is(":visible")) {
+                $("#" + id).show();
+            } else {
+                $('#' + id).hide();
+            }
+        }
+
+
+        $(".dropdown-menu a").click(function() {
+            var selText = $(this).text();
+            $(this).parents('.dropdown').find('.dropdown-toggle').html(selText + ' <span class="caret"></span>');
+        });
+
+
+
+
+        jQuery('<div class="quantity-nav"><div class="quantity-button quantity-up"><b>+</b></div><div class="quantity-button quantity-down"><b>-</b></div></div>').insertAfter('.quantity input');
+jQuery('.quantity').each(function() {
+  var spinner = jQuery(this),
+    input = spinner.find('input[type="number"]'),
+    btnUp = spinner.find('.quantity-up'),
+    btnDown = spinner.find('.quantity-down'),
+    min = input.attr('min'),
+    max = input.attr('max');
+
+  btnUp.click(function() {
+    var oldValue = parseFloat(input.val());
+    if (oldValue >= max) {
+      var newVal = oldValue;
+    } else {
+      var newVal = oldValue + 1;
+    }
+    spinner.find("input").val(newVal);
+    spinner.find("input").trigger("change");
+  });
+
+  btnDown.click(function() {
+    var oldValue = parseFloat(input.val());
+    if (oldValue <= min) {
+      var newVal = oldValue;
+    } else {
+      var newVal = oldValue - 1;
+    }
+    spinner.find("input").val(newVal);
+    spinner.find("input").trigger("change");
+  });
+
+});
+    </script>
+</body>
+
 </html>
